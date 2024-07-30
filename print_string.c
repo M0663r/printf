@@ -1,24 +1,24 @@
 #include "main.h"
 
 /**
- * print_string - prints a string
- * @str: string to print
+ * print_string - Prints a string
+ * @str: String to print
  *
- * Return: number of characters printed
+ * Return: Number of characters printed
  */
 int print_string(char *str)
 {
-	int len = 0;
+	int i;
 
 	if (str == NULL)
 	{
 		str = "(null)";
 	}
 
-	while (*str)
+	for (i = 0; str[i]; i++)
 	{
-		len += write(1, str, 1);
-		str++;
+		write(1, &str[i], 1);
 	}
-	return (len);
+
+	return (i);
 }

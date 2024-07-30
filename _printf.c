@@ -1,55 +1,22 @@
 #include "main.h"
 
 /**
- * _printf - produces output according to a format
- * @format: format string containing the characters and the specifiers
+ * _printf - Produces output according to a format
+ * @format: Character string containing the format directives
  *
- * Return: number of characters printed (excluding the null byte)
+ * Return: Number of characters printed (excluding null byte)
  */
 int _printf(const char *format, ...)
 {
 	va_list args;
 	int printed_chars = 0;
-	int i;
 
 	if (format == NULL)
-	{
 		return (-1);
-	}
 
 	va_start(args, format);
-
-	for (i = 0; format[i] != '\0'; i++)
-	{
-		if (format[i] == '%' && format[i + 1] != '\0')
-		{
-			i++;
-			switch (format[i])
-			{
-				case 'c':
-					printed_chars += _putchar(va_arg(args, int));
-				break;
-				case 's':
-					printed_chars += print_string(va_arg(args, char *));
-				break;
-				case 'd':
-				case 'i':
-					printed_chars += print_int(va_arg(args, int));
-				break;
-				case '%':
-					printed_chars += write(1, "%", 1);
-				break;
-				default:
-					printed_chars += write(1, &format[i], 1);
-				break;
-			}
-		}
-		else
-		{
-			printed_chars += write(1, &format[i], 1);
-		}
-	}
-
+	printed_chars = handle_format(format, args);
 	va_end(args);
+
 	return (printed_chars);
 }

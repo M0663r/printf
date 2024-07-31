@@ -1,33 +1,26 @@
 #include "main.h"
 
 /**
- * print_binary - Prints an unsigned int in binary
- * @num: Unsigned int to print
- *
+ * print_binary - Converts an unsigned int to binary
+ * @args: va_list containing the unsigned int to convert
  * Return: Number of characters printed
  */
-int print_binary(unsigned int num)
+int print_binary(va_list args)
 {
-	int count = 0;
+	unsigned int num = va_arg(args, unsigned int);
 	char buffer[32];
-	int i;
+	int i = 0, count = 0;
 
 	if (num == 0)
 		return (write(1, "0", 1));
 
-	for (i = 31; i >= 0; i--)
+	while (num > 0)
 	{
-		buffer[i] = (num & 1) ? '1' : '0';
-		num >>= 1;
+		buffer[i++] = (num % 2) + '0';
+		num /= 2;
 	}
 
-	for (i = 0; i < 32; i++)
-	{
-		if (buffer[i] == '1')
-			break;
-	}
-
-	for (; i < 32; i++)
+	while (i--)
 		count += write(1, &buffer[i], 1);
 
 	return (count);

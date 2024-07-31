@@ -1,24 +1,44 @@
 #include "main.h"
 
 /**
- * print_hex - Prints an unsigned int in hexadecimal
- * @num: Unsigned int to print
- * @uppercase: Flag indicating if the hex should be uppercase
- *
+ * print_hex - Converts an unsigned int to hexadecimal
+ * @args: va_list containing the unsigned int to convert
+ * @uppercase: Flag indicating if the hexadecimal should be uppercase
  * Return: Number of characters printed
  */
-int print_hex(unsigned int num, int uppercase)
+int print_hex(va_list args, int uppercase)
 {
-	int count = 0;
-	char offset = uppercase ? 'A' - 10 : 'a' - 10;
+	unsigned int num = va_arg(args, unsigned int);
+	char buffer[9];
+	char *hex_digits;
+	int i = 0, count = 0;
 
-	if (num / 16)
-		count += print_hex(num / 16, uppercase);
-
-	if ((num % 16) < 10)
-		count += write(1, &"0123456789"[num % 16], 1);
+	if (uppercase)
+		hex_digits = "0123456789ABCDEF";
 	else
-		count += write(1, &(char){offset + (num % 16)}, 1);
+		hex_digits = "0123456789abcdef";
+
+	if (num == 0)
+		return (write(1, "0", 1));
+
+	while (num > 0)
+	{
+		buffer[i++] = hex_digits[num % 16];
+		num /= 16;
+	}
+
+	while (i--)
+		count += write(1, &buffer[i], 1);
 
 	return (count);
+}
+
+int print_x(va_list args)
+{
+	return (print_hex(args, 0));
+}
+
+int print_X(va_list args)
+{
+	return (print_hex(args, 1));
 }

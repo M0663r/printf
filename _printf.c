@@ -2,21 +2,20 @@
 
 /**
  * _printf - Produces output according to a format
- * @format: Character string containing the format directives
- *
- * Return: Number of characters printed (excluding null byte)
+ * @format: Format string containing the desired format specifiers
+ * Return: Number of characters printed
  */
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int printed_chars = 0;
+    va_list args;
+    int count;
 
-	if (format == NULL)
-		return (-1);
+    if (format == NULL)
+        return (-1);
 
-	va_start(args, format);
-	printed_chars = handle_format(format, args);
-	va_end(args);
+    va_start(args, format);
+    count = handle_format(format, args);
+    va_end(args);
 
-	return (printed_chars);
+    return (count);
 }

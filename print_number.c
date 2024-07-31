@@ -2,26 +2,31 @@
 
 /**
  * print_number - Prints an integer
- * @num: Integer to print
- *
+ * @args: va_list containing the integer to print
  * Return: Number of characters printed
  */
-int print_number(int num)
+int print_number(va_list args)
 {
-	int count = 0;
-	unsigned int n = (num < 0) ? -num : num;
+	int num = va_arg(args, int);
+	char buffer[12];
+	int i = 0, neg = 0, count = 0;
 
 	if (num < 0)
 	{
-		count += write(1, "-", 1);
+		neg = 1;
+		num = -num;
 	}
 
-	if (n / 10)
-	{
-		count += print_number(n / 10);
-	}
+	do {
+		buffer[i++] = (num % 10) + '0';
+		num /= 10;
+	} while (num > 0);
 
-	count += write(1, &"0123456789"[n % 10], 1);
+	if (neg)
+		buffer[i++] = '-';
+
+	while (i--)
+		count += write(1, &buffer[i], 1);
 
 	return (count);
 }

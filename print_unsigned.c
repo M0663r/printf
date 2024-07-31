@@ -2,18 +2,22 @@
 
 /**
  * print_unsigned - Prints an unsigned integer
- * @num: Unsigned integer to print
- *
+ * @args: va_list containing the unsigned integer to print
  * Return: Number of characters printed
  */
-int print_unsigned(unsigned int num)
+int print_unsigned(va_list args)
 {
-	int count = 0;
+	unsigned int num = va_arg(args, unsigned int);
+	char buffer[12];
+	int i = 0, count = 0;
 
-	if (num / 10)
-		count += print_unsigned(num / 10);
+	do {
+		buffer[i++] = (num % 10) + '0';
+		num /= 10;
+	} while (num > 0);
 
-	count += write(1, &"0123456789"[num % 10], 1);
+	while (i--)
+		count += write(1, &buffer[i], 1);
 
 	return (count);
 }
